@@ -31,7 +31,7 @@ public class SignController {
         }
         return signInResultDto;
     }
-    @PostMapping("/sing-up")
+    @PostMapping("/sign-up")
     public SignUpResultDto signUp
             (@RequestParam String id,
              @RequestParam String password,
