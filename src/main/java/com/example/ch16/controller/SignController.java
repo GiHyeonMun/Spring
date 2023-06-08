@@ -21,7 +21,7 @@ public class SignController {
         this.signService = signService;
     }
 
-    @PostMapping("/sing-in")
+    @PostMapping("/sign-in")
     public SignInResultDto signIn
             (@RequestParam String id,
              @RequestParam String password) throws RuntimeException {

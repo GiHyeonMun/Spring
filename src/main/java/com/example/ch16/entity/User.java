@@ -53,6 +53,14 @@ public class User implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
+    public User(String id, String password, String name, String email, List<String> roleAdmin) {
+        this.uid = uid;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.roles = roleAdmin;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
@@ -92,13 +100,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public User(String uid, String password, String name, String email, List<String> roles) {
-        this.uid = uid;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.roles = roles;
     }
 }

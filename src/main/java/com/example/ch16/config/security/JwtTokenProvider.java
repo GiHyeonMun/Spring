@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
 
     private final UserDetailService userDetailService;
+
     private String secretKey = "daelimSpring!@#$daelimSpring!@#$daelimSpring!@#$";
     private final long tokenValidMillisecond = 1000L * 60 * 60;
 
@@ -42,8 +44,8 @@ public class JwtTokenProvider {
         return token;
     }
 
-    public Authentication getAuthenication(String token) {
-        System.out.println("[getAuthenication] 토큰 인증 정보 조회");
+    public Authentication getAuthentication(String token) {
+        System.out.println("[getAuthentication] 토큰 인증 정보 조회");
         UserDetails userDetails = userDetailService.loadUserByUsername(this.getUsername(token));
         return new UsernamePasswordAuthenticationToken
                 (userDetails, "", userDetails.getAuthorities());
