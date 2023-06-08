@@ -8,6 +8,8 @@ import com.example.ch16.entity.User;
 import com.example.ch16.repository.UserRepository;
 import com.example.ch16.service.SignService;
 import java.util.Collections;
+
+import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,21 +32,21 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public SignUpResultDto signUp
-            (String id, String password, String name, String email, String role) {
+            (String uid, String password, String name, String email, String role) {
         System.out.println("[signUp] 회원가입");
         User user;
         if(role.equalsIgnoreCase("admin")) {
-            user = new User(id, password, name, email, Collections.singletonList("ROLE_ADMIN"));
+            user = new User(uid, passwordEncoder.encode(password), name, email, Collections.singletonList("ROLE_ADMIN"));
 //            user = User.builder().uid(id).name(name).email(email).
 //                    password(passwordEncoder.encode(password)).
 //                    roles(Collections.singletonList("ROLE_ADMIN")).id().build();
         } else {
-            user = new User(id, password, name, email, Collections.singletonList("ROLE_USER"));
+            user = new User(uid, passwordEncoder.encode(password), name, email, Collections.singletonList("ROLE_USER"));
 //            user = User.builder().uid(id).name(name).email(email).
 //                    password(passwordEncoder.encode(password)).
 //                    roles(Collections.singletonList("ROLE_USER")).id().build();
         }
-
+        System.out.println(user.toString());
         User savedUser = userRepository.save(user);
         SignUpResultDto signUpResultDto = new SignUpResultDto();
         if(!savedUser.getName().isEmpty()) {
@@ -58,6 +60,8 @@ public class SignServiceImpl implements SignService {
     @Override
     public SignInResultDto signIn(String id, String password) throws RuntimeException {
         User user = userRepository.getByUid(id);
+        System.out.println(user.toString());
+        System.out.println(passwordEncoder.toString());
         if(!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException();
         }
